@@ -23,7 +23,7 @@ spec:
             containerPort: 80
         env:
         - name: ALLOW_EMPTY_PASSWORD
-          value: yes
+          value: "yes"
         - name: PHPBB_DATABASE_USER
           value: {{ template "mysql.fullname" . }}
         - name: PHPBB_DATABASE_PASSWORD
