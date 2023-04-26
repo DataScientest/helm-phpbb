@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "phpbb.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "phpbb.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.phpbb.service.type }}
+  ports:
+  - name: http
+    port: {{ .Values.phpbb.service.port }}
+    targetPort: http
+    protocol: TCP
+  selector:
+    {{- include "phpbb.selectorLabels" . | nindent 4 }}

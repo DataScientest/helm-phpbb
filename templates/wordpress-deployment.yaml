@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "phpbb.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "phpbb.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.mysql.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "phpbb.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "phpbb.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: phpbb
+        image: {{ .Values.phpbb.deployment.image }}
+        ports:
+          - name: http
+            containerPort: 80
+        env:
+        - name: phpbb_DB_HOST
+          value: {{ template "mysql.fullname" . }}
+        - name: phpbb_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "mysql.secrets" . }}
+              key: db-password
