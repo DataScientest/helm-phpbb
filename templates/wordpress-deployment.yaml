@@ -22,9 +22,11 @@ spec:
           - name: http
             containerPort: 80
         env:
-        - name: phpbb_DB_HOST
+        - name: ALLOW_EMPTY_PASSWORD
+          value: yes
+        - name: PHPBB_DATABASE_USER
           value: {{ template "mysql.fullname" . }}
-        - name: phpbb_DB_PASSWORD
+        - name: PHPBB_DATABASE_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ template "mysql.secrets" . }}
